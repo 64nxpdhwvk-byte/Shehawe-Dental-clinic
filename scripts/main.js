@@ -12,35 +12,47 @@
   const placeholder =
     'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" fill="none"><rect width="400" height="300" rx="16" fill="%23eef5ff"/><path d="M70 220c30-40 70-60 130-60s100 20 130 60" stroke="%231c7ed6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/><circle cx="145" cy="140" r="40" fill="%231c7ed6" opacity="0.12"/><circle cx="255" cy="140" r="32" fill="%230fbf61" opacity="0.12"/><text x="200" y="160" text-anchor="middle" fill="%23155faf" font-family="Arial, sans-serif" font-size="22" font-weight="700">Shehawy Dental</text></svg>';
 
-  function normalizePath(pathname) {
-    let cleaned = pathname.replace(/index\.html$/i, '');
-    if (cleaned.endsWith('/') && cleaned !== '/') cleaned = cleaned.slice(0, -1);
-    if (cleaned === '') cleaned = '/';
-    return cleaned;
+  function normalizePathname(pathname) {
+    if (pathname === '/') return '/';
+    return pathname.replace(/\/+$/, '') || '/';
   }
 
-  function mappedPath(pathname, targetLang) {
-    const normalized = normalizePath(pathname);
-    const routes = {
-      '/': { ar: '/', en: '/en/' },
-      '/services': { ar: '/services', en: '/en/services' },
-      '/team': { ar: '/team', en: '/en/team' },
-      '/en': { ar: '/', en: '/en/' },
-      '/en/services': { ar: '/services', en: '/en/services' },
-      '/en/team': { ar: '/team', en: '/en/team' }
-    };
-    if (routes[normalized]) return routes[normalized][targetLang];
-    if (targetLang === 'en') return normalized.startsWith('/en') ? normalized : `/en${normalized}`;
-    return normalized.replace(/^\/en/, '') || '/';
+  function getPathInfo() {
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    const repoSegments = [];
+    const mutable = [...segments];
+
+    if (mutable[0] && !['en', 'services', 'team'].includes(mutable[0])) {
+      repoSegments.push(mutable.shift());
+    }
+
+    let language = 'ar';
+    if (mutable[0] === 'en') {
+      language = 'en';
+      mutable.shift();
+    }
+
+    const page = mutable[0] || '';
+    return { repoSegments, language, page };
+  }
+
+  function buildPath(targetLang, page) {
+    const { repoSegments } = getPathInfo();
+    const parts = [...repoSegments];
+    if (targetLang === 'en') parts.push('en');
+    if (page) parts.push(page);
+
+    const path = parts.join('/');
+    return `/${path}${path ? '/' : ''}`;
   }
 
   function applyPreferredLanguage() {
     const stored = localStorage.getItem(preferredKey);
     if (!stored) return;
-    const currentLang = isArabic ? 'ar' : 'en';
-    if (stored !== currentLang) {
-      const destination = mappedPath(window.location.pathname, stored);
-      if (destination !== window.location.pathname) {
+    const { language, page } = getPathInfo();
+    if (stored !== language) {
+      const destination = buildPath(stored, page);
+      if (normalizePathname(destination) !== normalizePathname(window.location.pathname)) {
         window.location.replace(destination);
       }
     }
@@ -51,9 +63,10 @@
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         const targetLang = btn.dataset.languageToggle;
-        const destination = mappedPath(window.location.pathname, targetLang);
+        const { page } = getPathInfo();
+        const destination = buildPath(targetLang, page);
         localStorage.setItem(preferredKey, targetLang);
-        if (destination !== window.location.pathname) {
+        if (normalizePathname(destination) !== normalizePathname(window.location.pathname)) {
           window.location.href = destination;
         }
       });

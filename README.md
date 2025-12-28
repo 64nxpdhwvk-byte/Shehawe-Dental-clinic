@@ -4,11 +4,11 @@ Static, mobile-first, bilingual website for Shehawy Dental Clinic. Arabic is the
 
 ## Pages
 - `/` – Home (Arabic)
-- `/services` – Services (Arabic)
-- `/team` – Team (Arabic)
+- `/services/` – Services (Arabic)
+- `/team/` – Team (Arabic)
 - `/en/` – Home (English)
-- `/en/services` – Services (English)
-- `/en/team` – Team (English)
+- `/en/services/` – Services (English)
+- `/en/team/` – Team (English)
 
 ## Features
 - Sticky header with desktop and mobile navigation, WhatsApp/Call CTAs, and language switcher that maps to the equivalent page and persists preference in `localStorage`.
@@ -19,8 +19,8 @@ Static, mobile-first, bilingual website for Shehawy Dental Clinic. Arabic is the
 
 ## Editing Content
 Text lives directly in the HTML files:
-- Arabic: `index.html`, `services.html`, `team.html`
-- English: `en/index.html`, `en/services.html`, `en/team.html`
+- Arabic: `index.html`, `services/index.html`, `team/index.html`
+- English: `en/index.html`, `en/services/index.html`, `en/team/index.html`
 
 Update CTA links, phone numbers, hours, or any copy in those files. Keep `data-language-toggle` attributes for the language switch.
 
