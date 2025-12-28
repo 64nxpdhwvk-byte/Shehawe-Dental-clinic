@@ -26,7 +26,7 @@ Update CTA links, phone numbers, hours, or any copy in those files. Keep `data-l
 
 ## Replacing Images
 All placeholders are JPEGs sized for easy swapping:
-- Logo: `assets/logo.jpeg` (replace with the official logo). If the image fails to load, a text logo is shown.
+- Logo: `assets/logos.png` (replace with the official logo). If the image fails to load, a text logo is shown.
 - Services: `assets/services/*.jpeg`
 - Team: `assets/team/*.jpeg`
 
