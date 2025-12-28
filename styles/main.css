@@ -110,6 +110,23 @@ a:focus-visible {
   transform: translateY(-1px);
 }
 
+.cta-icon {
+  padding: 12px;
+  border-radius: 14px;
+  min-width: 44px;
+  justify-content: center;
+}
+
+.whatsapp-icon {
+  background: #25d366;
+  color: #ffffff;
+  box-shadow: var(--shadow-soft);
+}
+
+.whatsapp-icon:hover {
+  background: #1ebe5d;
+}
+
 .page {
   min-height: 100vh;
 }
@@ -154,6 +171,7 @@ header.site-header {
   align-items: center;
   gap: 10px;
   flex-shrink: 0;
+  text-decoration: none;
 }
 
 .logo-image {
@@ -179,6 +197,21 @@ header.site-header {
   font-weight: 800;
   font-size: 1.05rem;
   color: var(--color-primary-dark);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: start;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+
+.brand-since {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--color-muted);
 }
 
 nav.main-nav {
@@ -601,6 +634,14 @@ body.lang-ar .floating-bar {
 }
 
 @media (max-width: 960px) {
+  .header-actions {
+    gap: 8px;
+  }
+
+  .header-actions .cta {
+    display: none;
+  }
+
   nav.main-nav {
     display: none;
   }
@@ -628,6 +669,12 @@ body.lang-ar .floating-bar {
     border-radius: 10px;
     background: #f8fafc;
     font-weight: 700;
+  }
+
+  .mobile-panel .quick-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .mobile-panel .cta {

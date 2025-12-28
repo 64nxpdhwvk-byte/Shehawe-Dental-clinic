@@ -6,7 +6,6 @@
   const navLinks = document.querySelectorAll('.nav-link');
   const header = document.querySelector('.site-header');
   const logoImg = document.querySelector('.logo-image img');
-  const logoText = document.querySelector('.logo-text');
   const languageButtons = document.querySelectorAll('[data-language-toggle]');
   const preferredKey = 'shehawy-language';
   const root = document.documentElement;
@@ -113,21 +112,20 @@
   }
 
   function handleLogoFallback() {
-    if (!logoImg || !logoText) return;
-    const toggleState = () => {
+    if (!logoImg) return;
+    const ensureVisibility = () => {
       if (logoImg.naturalWidth === 0) {
         logoImg.style.display = 'none';
       } else {
-        logoText.style.display = 'none';
+        logoImg.style.display = '';
       }
     };
-    logoImg.addEventListener('load', toggleState);
+    logoImg.addEventListener('load', ensureVisibility);
     logoImg.addEventListener('error', () => {
       logoImg.style.display = 'none';
-      logoText.style.display = 'inline-flex';
     });
     if (logoImg.complete) {
-      toggleState();
+      ensureVisibility();
     }
   }
 
