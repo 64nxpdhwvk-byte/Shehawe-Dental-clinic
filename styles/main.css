@@ -141,21 +141,22 @@ header.site-header {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .logo-image {
-  min-width: clamp(48px, 5vw, 72px);
-  height: clamp(48px, 5vw, 72px);
-  border-radius: 12px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #e6f0ff, #f8fbff);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  line-height: 0;
 }
 
 .logo-image img {
-  height: clamp(32px, 4vw, 56px);
+  height: clamp(48px, 5vw, 56px);
   width: auto;
   max-width: 100%;
   object-fit: contain;
@@ -595,6 +596,10 @@ body.lang-ar .floating-bar {
     gap: 8px;
     bottom: 18px;
     right: 12px;
+  }
+
+  .logo-image img {
+    height: clamp(36px, 8vw, 44px);
   }
 
   .floating-bar a {
