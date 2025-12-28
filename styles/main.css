@@ -542,6 +542,7 @@ body.lang-ar .floating-bar {
   position: relative;
   overflow: hidden;
   box-shadow: var(--shadow-soft);
+  isolation: isolate;
 }
 
 .hero-image img {
@@ -551,6 +552,7 @@ body.lang-ar .floating-bar {
   position: absolute;
   inset: 0;
   filter: saturate(1.02);
+  z-index: 0;
 }
 
 .hero-pattern {
@@ -559,6 +561,16 @@ body.lang-ar .floating-bar {
   background: radial-gradient(circle at 30% 30%, rgba(15, 191, 97, 0.15), transparent 42%),
     radial-gradient(circle at 80% 20%, rgba(28, 126, 214, 0.18), transparent 38%),
     radial-gradient(circle at 60% 70%, rgba(12, 114, 185, 0.12), transparent 40%);
+  z-index: 1;
+}
+
+.hero-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(0, 0, 0, 0.14) 15%, rgba(0, 0, 0, 0.6) 100%);
+  z-index: 2;
+  pointer-events: none;
 }
 
 .hero-badge {
@@ -567,14 +579,18 @@ body.lang-ar .floating-bar {
   right: 16px;
   left: 16px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 12px 14px;
-  border-radius: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 0;
+  background: none;
+  border-radius: 0;
   font-weight: 700;
-  color: #0f172a;
-  border: 1px solid rgba(28, 126, 214, 0.1);
+  color: #ffffff;
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  border: none;
+  z-index: 3;
+  text-align: start;
 }
 
 .social-only.whatsapp,
@@ -638,9 +654,7 @@ body.lang-ar .floating-bar {
   }
 
   .hero-badge {
-    flex-direction: column;
-    gap: 6px;
-    text-align: center;
+    gap: 4px;
   }
 
   .floating-bar {
