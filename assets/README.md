@@ -1,7 +1,7 @@
 # Assets placeholder
 
 Upload final JPEG images to these paths after merging:
-- Logo: `assets/logo.jpeg`
+- Logo: `assets/logos.png`
 - Favicon: `assets/favicon.png`
 - Services: `assets/services/*.jpeg`
 - Team: `assets/team/*.jpeg`
