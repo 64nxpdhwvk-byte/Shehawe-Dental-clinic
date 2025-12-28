@@ -9,6 +9,7 @@
   const logoText = document.querySelector('.logo-text');
   const languageButtons = document.querySelectorAll('[data-language-toggle]');
   const preferredKey = 'shehawy-language';
+  const root = document.documentElement;
   const placeholder =
     'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300" fill="none"><rect width="400" height="300" rx="16" fill="%23eef5ff"/><path d="M70 220c30-40 70-60 130-60s100 20 130 60" stroke="%231c7ed6" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/><circle cx="145" cy="140" r="40" fill="%231c7ed6" opacity="0.12"/><circle cx="255" cy="140" r="32" fill="%230fbf61" opacity="0.12"/><text x="200" y="160" text-anchor="middle" fill="%23155faf" font-family="Arial, sans-serif" font-size="22" font-weight="700">Shehawy Dental</text></svg>';
 
@@ -130,6 +131,20 @@
     }
   }
 
+  function syncHeaderOffset() {
+    if (!header) return;
+    const offset = header.offsetHeight + 18;
+    root.style.setProperty('--header-offset', `${offset}px`);
+  }
+
+  function handleResize() {
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(syncHeaderOffset, 120);
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     applyPreferredLanguage();
     bindLanguageSwitchers();
@@ -137,5 +152,7 @@
     bindScrollShadow();
     applyImageFallbacks();
     handleLogoFallback();
+    syncHeaderOffset();
+    handleResize();
   });
 })();

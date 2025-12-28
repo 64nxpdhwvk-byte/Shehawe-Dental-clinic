@@ -26,9 +26,9 @@ Update CTA links, phone numbers, hours, or any copy in those files. Keep `data-l
 
 ## Replacing Images
 All placeholders are JPEGs sized for easy swapping:
-- Logo: `assets/logos.png` (replace with the official logo). If the image fails to load, a text logo is shown.
-- Services: `assets/services/*.jpeg`
-- Team: `assets/team/*.jpeg`
+- Logo: `assets/Logos1.png` (official logo). If the image fails to load, a text logo is shown.
+- Services: `assets/services/*`
+- Team: `assets/team/*`
 
 Binary assets are intentionally **not** committed. Upload your JPEGs to the same paths (see `assets/README.md`) after merging. If an image is missing, a neutral SVG placeholder is shown automatically while keeping the alt text for accessibility.
 
@@ -48,6 +48,6 @@ Any static host works (Netlify, Vercel, Cloudflare Pages, GitHub Pages):
 
 ## Contact Links
 - WhatsApp: `https://wa.me/201225204045`
-- Call: `tel:+201225204045`
+- Call (landline): `tel:+2035422527`
 - Facebook: `https://www.facebook.com/SHDC2016`
 - Instagram: `https://www.instagram.com/shdc2016`
