@@ -27,8 +27,12 @@ html {
 body {
   margin: 0;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(245, 249, 255, 0.92)),
-    url('../assets/bg.png') center/cover fixed;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(245, 249, 255, 0.88)),
+    url('../assets/bbg.jpg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--color-text);
   font-family: 'Cairo', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.6;
@@ -197,6 +201,12 @@ header.site-header {
   font-weight: 800;
   font-size: 1.05rem;
   color: var(--color-primary-dark);
+}
+
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
 }
 
 .brand-text {
