@@ -46,18 +46,6 @@
     return `/${path}${path ? '/' : ''}`;
   }
 
-  function applyPreferredLanguage() {
-    const stored = localStorage.getItem(preferredKey);
-    if (!stored) return;
-    const { language, page } = getPathInfo();
-    if (stored !== language) {
-      const destination = buildPath(stored, page);
-      if (normalizePathname(destination) !== normalizePathname(window.location.pathname)) {
-        window.location.replace(destination);
-      }
-    }
-  }
-
   function bindLanguageSwitchers() {
     languageButtons.forEach((btn) => {
       btn.addEventListener('click', (e) => {
@@ -144,7 +132,6 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    applyPreferredLanguage();
     bindLanguageSwitchers();
     bindNavigation();
     bindScrollShadow();
