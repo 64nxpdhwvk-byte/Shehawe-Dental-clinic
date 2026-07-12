@@ -50,4 +50,4 @@ Any static host works (Netlify, Vercel, Cloudflare Pages, GitHub Pages):
 - WhatsApp: `https://wa.me/201225204045`
 - Call (landline): `tel:+2035422527`
 - Facebook: `https://www.facebook.com/SHDC2016`
-- Instagram: `https://www.instagram.com/shdc2016`
+- Instagram: `https://www.instagram.com/shehawy_dent_clinic/`
