@@ -1,0 +1,446 @@
+name: Apply structured data update
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/apply-structured-data.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply-structured-data:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Apply and validate structured data
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+          from copy import deepcopy
+          from pathlib import Path
+          from html.parser import HTMLParser
+
+          BASE = "https://shehawydentalclinic.com"
+          CLINIC_ID = f"{BASE}/#dentist"
+          WEBSITE_ID = f"{BASE}/#website"
+          LOGO = f"{BASE}/assets/Logos1.png"
+          SOCIAL = [
+              "https://www.facebook.com/SHDC2016",
+              "https://www.instagram.com/shehawy_dent_clinic/",
+          ]
+          PHONE = "+20 3 542 2527"
+          SCRIPT_RE = re.compile(r'  <script type="application/ld\+json">\s*.*?\s*</script>', re.S)
+
+          pages = {
+              "index.html": {
+                  "lang": "ar-EG",
+                  "url": f"{BASE}/",
+                  "kind": "home",
+                  "name": "عيادة شهاوي لطب الأسنان",
+                  "address": {
+                      "streetAddress": "72 شارع الطيار أحمد سعود – برج الأمراء – الدور الأرضي – فلمنج (أمام الملحقية الثقافية الليبية)",
+                      "addressLocality": "الإسكندرية",
+                  },
+              },
+              "en/index.html": {
+                  "lang": "en-EG",
+                  "url": f"{BASE}/en/",
+                  "kind": "home",
+                  "name": "Shehawy Dental Clinic",
+                  "address": {
+                      "streetAddress": "72 El-Tayar Ahmed Saud St., Borg El-Omaraa, Ground Floor, Fleming (Opposite the Libyan Cultural Bureau)",
+                      "addressLocality": "Alexandria",
+                  },
+              },
+              "services/index.html": {
+                  "lang": "ar-EG",
+                  "url": f"{BASE}/services/",
+                  "kind": "services",
+                  "name": "عيادة شهاوي لطب الأسنان",
+                  "address": {
+                      "streetAddress": "72 شارع الطيار أحمد سعود – برج الأمراء – الدور الأرضي – فلمنج (أمام الملحقية الثقافية الليبية)",
+                      "addressLocality": "الإسكندرية",
+                  },
+                  "breadcrumb": [
+                      ("الرئيسية", f"{BASE}/"),
+                      ("الخدمات", f"{BASE}/services/"),
+                  ],
+              },
+              "en/services/index.html": {
+                  "lang": "en-EG",
+                  "url": f"{BASE}/en/services/",
+                  "kind": "services",
+                  "name": "Shehawy Dental Clinic",
+                  "address": {
+                      "streetAddress": "72 El-Tayar Ahmed Saud St., Borg El-Omaraa, Ground Floor, Fleming (Opposite the Libyan Cultural Bureau)",
+                      "addressLocality": "Alexandria",
+                  },
+                  "breadcrumb": [
+                      ("Home", f"{BASE}/en/"),
+                      ("Services", f"{BASE}/en/services/"),
+                  ],
+              },
+              "team/index.html": {
+                  "lang": "ar-EG",
+                  "url": f"{BASE}/team/",
+                  "kind": "team",
+                  "name": "عيادة شهاوي لطب الأسنان",
+                  "address": {
+                      "streetAddress": "72 شارع الطيار أحمد سعود – برج الأمراء – الدور الأرضي – فلمنج (أمام الملحقية الثقافية الليبية)",
+                      "addressLocality": "الإسكندرية",
+                  },
+                  "breadcrumb": [
+                      ("الرئيسية", f"{BASE}/"),
+                      ("الفريق", f"{BASE}/team/"),
+                  ],
+              },
+              "en/team/index.html": {
+                  "lang": "en-EG",
+                  "url": f"{BASE}/en/team/",
+                  "kind": "team",
+                  "name": "Shehawy Dental Clinic",
+                  "address": {
+                      "streetAddress": "72 El-Tayar Ahmed Saud St., Borg El-Omaraa, Ground Floor, Fleming (Opposite the Libyan Cultural Bureau)",
+                      "addressLocality": "Alexandria",
+                  },
+                  "breadcrumb": [
+                      ("Home", f"{BASE}/en/"),
+                      ("Team", f"{BASE}/en/team/"),
+                  ],
+              },
+          }
+
+          services = {
+              "ar-EG": [
+                  ("root-canal-treatment", "علاج العصب (حشو العصب)", "نحافظ على السن وننهي الألم بأدق خطوات علاج العصب وبأعلى معايير الأمان."),
+                  ("cosmetic-fillings", "حشوات تجميلية", "حشوات بلون الأسنان تعيد الشكل والوظيفة بشكل طبيعي ومريح."),
+                  ("gum-treatment", "علاج اللثة", "تشخيص وعلاج نزيف والتهابات اللثة لحماية الأسنان ودعم صحة الفم على المدى الطويل."),
+                  ("scaling-polishing", "تنظيف الجير وتلميع الأسنان", "تنظيف عميق لإزالة الجير والتصبغات لابتسامة أنظف ونَفَس أفضل."),
+                  ("teeth-whitening", "تبييض الأسنان (Bleaching)", "تبييض آمن داخل العيادة لدرجات أفتح وابتسامة أكثر إشراقًا."),
+                  ("zirconia-crowns", "تيجان زيركون (Zirconia Crowns)", "تركيبات زيركون قوية وشكلها طبيعي لنتيجة ثابتة ومظهر جمالي ممتاز."),
+                  ("porcelain-crowns", "تيجان بورسلين (Porcelain Crowns)", "تركيبات بورسلين بجودة عالية لاستعادة السن بشكل طبيعي ونتائج دقيقة."),
+                  ("removable-dentures", "تركيبات متحركة (أطقم)", "أطقم مريحة ومظبوطة على المقاس تساعدك على الأكل والكلام بثقة."),
+                  ("dental-implants", "زراعة الأسنان", "حل ثابت لتعويض الأسنان المفقودة بزراعات مناسبة لحالتك ونتيجة قريبة من الطبيعي."),
+                  ("dental-extractions", "خلع عادي وخلع جراحي", "خلع آمن عند الحاجة مع متابعة بعد الإجراء لتقليل الألم وتسريع الالتئام."),
+                  ("pediatric-dentistry", "أسنان الأطفال", "رعاية لطيفة للأطفال تركّز على الوقاية والراحة وبناء عادات صحية من بدري."),
+              ],
+              "en-EG": [
+                  ("root-canal-treatment", "Root Canal Treatment", "Save an infected tooth and relieve pain with precise, modern endodontic care."),
+                  ("cosmetic-fillings", "Cosmetic Fillings", "Natural-looking fillings that restore function and blend seamlessly with your smile."),
+                  ("gum-treatment", "Gum Treatment", "Professional periodontal care to treat bleeding gums and protect long-term oral health."),
+                  ("scaling-polishing", "Teeth Scaling & Polishing", "Deep cleaning to remove tartar and stains for a healthier, fresher smile."),
+                  ("teeth-whitening", "Teeth Whitening (Bleaching)", "Safe in-clinic whitening to brighten your teeth and boost your confidence."),
+                  ("zirconia-crowns", "Zirconia Crowns", "Strong, aesthetic zirconia crowns designed for a natural look and long-lasting results."),
+                  ("porcelain-crowns", "Porcelain Crowns", "High-quality porcelain restorations to restore damaged teeth with a clean, natural finish."),
+                  ("removable-dentures", "Removable Dentures", "Comfortable, functional dentures customized to fit and support daily life."),
+                  ("dental-implants", "Dental Implants", "Replace missing teeth with stable, natural-feeling implants tailored to your case."),
+                  ("dental-extractions", "Extractions (Simple & Surgical)", "Safe tooth removal when needed, including surgical extractions with proper follow-up."),
+                  ("pediatric-dentistry", "Pediatric Dentistry", "Gentle dental care for children, focused on comfort, prevention, and healthy habits."),
+              ],
+          }
+
+          people = {
+              "ar-EG": [
+                  ("ahmed-khairy", "د. أحمد خيري", f"{BASE}/assets/team/AKhairy.png", "مؤسس عيادة شهاوي لطب الأسنان وخريج جامعة 6 أكتوبر دفعة 2008. يقدم العلاج بخطوات واضحة وشرح مبسط يراعي راحة المريض ونتائج طويلة المدى. يواصل تطوير مهاراته عبر دورات متخصصة في علاج العصب ويؤمن أن التشخيص الدقيق والتخطيط السليم هما أساس أي علاج ناجح."),
+                  ("hesham-el-nouby", "د. هشام النوبي", f"{BASE}/assets/team/cicco.jpeg", "دكتور هشام النوبي، طبيب تقويم الأسنان والتجميل بالليزر، يعتمد النهج الذي يجمع بين التشخيص الدقيق والتقنية الحديثة والنتائج المتوازنة التي تحترم ملامح المريض وتجعله واثق من ابتسامته الجديدة."),
+                  ("hend-gamal-el-din", "د. هند جمال الدين", f"{BASE}/assets/team/koki.png", "طبيبة أسنان عامة وخريجة جامعة الإسكندرية دفعة 2012. تهيئ تجربة هادئة وودودة للأطفال لتقليل القلق وتشجيع زيارات مريحة لطبيب الأسنان. طورت تخصصها عبر دورات أسنان الأطفال وتشغل منصب رئيس وحدة الأسنان في وحدة أبيس 10 بوزارة الصحة."),
+              ],
+              "en-EG": [
+                  ("ahmed-khairy", "Dr. Ahmed Khairy", f"{BASE}/assets/team/AKhairy.png", "Founder of Shehawy Dental Clinic and a 6th of October University graduate (Class of 2008). He delivers precise treatment with clear steps and easy-to-understand explanations, prioritising patient comfort and long-term results. Dr. Ahmed continually develops his skills through specialized endodontic courses and believes that accurate diagnosis and thoughtful planning are the foundation of any successful treatment."),
+                  ("hesham-el-nouby", "Dr. Hesham El-Nouby", f"{BASE}/assets/team/cicco.jpeg", "Dr. Hesham El-Nouby is an orthodontic dentist and laser aesthetics practitioner. He follows an approach that combines precise diagnosis, modern technology, and balanced results—enhancing the patient’s smile while respecting their natural features and boosting confidence."),
+                  ("hend-gamal-el-din", "Dr. Hend Gamal El-Din", f"{BASE}/assets/team/koki.png", "General dentist and Alexandria University graduate (Class of 2012). She creates a calm, friendly experience for children, helping them overcome fear and enjoy visiting the dentist. Dr. Hend has advanced her specialty through pediatric dentistry courses and heads the dental department at Abis 10th unit with the Ministry of Health."),
+              ],
+          }
+
+          class HeadParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.in_title = False
+                  self.title = ""
+                  self.description = ""
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if tag == "title":
+                      self.in_title = True
+                  if tag == "meta" and attrs.get("name") == "description":
+                      self.description = attrs.get("content", "")
+              def handle_data(self, data):
+                  if self.in_title:
+                      self.title += data
+              def handle_endtag(self, tag):
+                  if tag == "title":
+                      self.in_title = False
+
+          def extract_title_description(html):
+              parser = HeadParser()
+              parser.feed(html)
+              return parser.title.strip(), parser.description.strip()
+
+          def business_node(config):
+              return {
+                  "@id": CLINIC_ID,
+                  "@type": ["Dentist", "Organization"],
+                  "name": config["name"],
+                  "url": f"{BASE}/",
+                  "logo": LOGO,
+                  "image": LOGO,
+                  "telephone": PHONE,
+                  "address": {
+                      "@type": "PostalAddress",
+                      "streetAddress": config["address"]["streetAddress"],
+                      "addressLocality": config["address"]["addressLocality"],
+                      "addressCountry": "EG",
+                  },
+                  "openingHoursSpecification": [{
+                      "@type": "OpeningHoursSpecification",
+                      "dayOfWeek": ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+                      "opens": "16:00",
+                      "closes": "22:00",
+                  }],
+                  "paymentAccepted": ["Visa", "MasterCard", "InstaPay"],
+                  "sameAs": SOCIAL,
+                  "inLanguage": config["lang"],
+              }
+
+          def website_node(config):
+              return {
+                  "@id": WEBSITE_ID,
+                  "@type": "WebSite",
+                  "url": f"{BASE}/",
+                  "name": config["name"],
+                  "publisher": {"@id": CLINIC_ID},
+                  "inLanguage": config["lang"],
+              }
+
+          def webpage_node(config, title, description, main_entity_id=None, breadcrumb_id=None):
+              node = {
+                  "@id": f"{config['url']}#webpage",
+                  "@type": "WebPage",
+                  "url": config["url"],
+                  "name": title,
+                  "description": description,
+                  "isPartOf": {"@id": WEBSITE_ID},
+                  "publisher": {"@id": CLINIC_ID},
+                  "about": {"@id": CLINIC_ID},
+                  "inLanguage": config["lang"],
+              }
+              if main_entity_id:
+                  node["mainEntity"] = {"@id": main_entity_id}
+              if breadcrumb_id:
+                  node["breadcrumb"] = {"@id": breadcrumb_id}
+              return node
+
+          def breadcrumb_node(config):
+              return {
+                  "@id": f"{config['url']}#breadcrumb",
+                  "@type": "BreadcrumbList",
+                  "itemListElement": [
+                      {
+                          "@type": "ListItem",
+                          "position": index,
+                          "name": name,
+                          "item": url,
+                      }
+                      for index, (name, url) in enumerate(config["breadcrumb"], 1)
+                  ],
+                  "inLanguage": config["lang"],
+              }
+
+          def service_item_list(config):
+              elements = []
+              for index, (slug, name, description) in enumerate(services[config["lang"]], 1):
+                  elements.append({
+                      "@type": "ListItem",
+                      "position": index,
+                      "item": {
+                          "@id": f"{BASE}/#service-{slug}",
+                          "@type": "Service",
+                          "name": name,
+                          "description": description,
+                          "provider": {"@id": CLINIC_ID},
+                          "inLanguage": config["lang"],
+                      },
+                  })
+              return {
+                  "@id": f"{config['url']}#services-list",
+                  "@type": "ItemList",
+                  "name": "خدمات عيادة شهاوي لطب الأسنان" if config["lang"] == "ar-EG" else "Shehawy Dental Clinic Services",
+                  "numberOfItems": len(elements),
+                  "itemListElement": elements,
+                  "inLanguage": config["lang"],
+              }
+
+          def people_item_list(config):
+              elements = []
+              for index, (slug, name, image, description) in enumerate(people[config["lang"]], 1):
+                  elements.append({
+                      "@type": "ListItem",
+                      "position": index,
+                      "item": {
+                          "@id": f"{BASE}/#person-{slug}",
+                          "@type": "Person",
+                          "name": name,
+                          "image": image,
+                          "description": description,
+                          "inLanguage": config["lang"],
+                      },
+                  })
+              return {
+                  "@id": f"{config['url']}#team-list",
+                  "@type": "ItemList",
+                  "name": "فريق عيادة شهاوي لطب الأسنان" if config["lang"] == "ar-EG" else "Shehawy Dental Clinic Team",
+                  "numberOfItems": len(elements),
+                  "itemListElement": elements,
+                  "inLanguage": config["lang"],
+              }
+
+          def build_graph(config, title, description):
+              graph = [business_node(config), website_node(config)]
+              if config["kind"] == "home":
+                  graph.append(webpage_node(config, title, description, CLINIC_ID))
+              elif config["kind"] == "services":
+                  item_list = service_item_list(config)
+                  breadcrumb = breadcrumb_node(config)
+                  graph.append(webpage_node(config, title, description, item_list["@id"], breadcrumb["@id"]))
+                  graph.append(item_list)
+                  graph.append(breadcrumb)
+              elif config["kind"] == "team":
+                  item_list = people_item_list(config)
+                  breadcrumb = breadcrumb_node(config)
+                  graph.append(webpage_node(config, title, description, item_list["@id"], breadcrumb["@id"]))
+                  graph.append(item_list)
+                  graph.append(breadcrumb)
+              else:
+                  raise ValueError(config["kind"])
+              return {
+                  "@context": "https://schema.org",
+                  "@graph": graph,
+              }
+
+          def render_script(data):
+              body = json.dumps(data, ensure_ascii=False, indent=2)
+              return "  <script type=\"application/ld+json\">\n" + "\n".join("  " + line for line in body.splitlines()) + "\n  </script>"
+
+          def strip_ld(html):
+              return SCRIPT_RE.sub("  <script type=\"application/ld+json\"></script>", html)
+
+          def iter_entities(value):
+              if isinstance(value, dict):
+                  if value.get("@type") in {"WebPage", "WebSite", "ItemList", "BreadcrumbList", "Service", "Person"} or value.get("@type") == ["Dentist", "Organization"]:
+                      yield value
+                  for child in value.values():
+                      yield from iter_entities(child)
+              elif isinstance(value, list):
+                  for child in value:
+                      yield from iter_entities(child)
+
+          originals = {}
+          updated = {}
+          for file_name, config in pages.items():
+              path = Path(file_name)
+              html = path.read_text(encoding="utf-8")
+              originals[file_name] = html
+              title, description = extract_title_description(html)
+              graph = build_graph(config, title, description)
+              rendered = render_script(graph)
+              new_html, count = SCRIPT_RE.subn(rendered, html, count=1)
+              if count != 1:
+                  raise SystemExit(f"Expected one JSON-LD block in {file_name}, replaced {count}")
+              path.write_text(new_html, encoding="utf-8")
+              updated[file_name] = new_html
+
+          forbidden_keys = {"aggregateRating", "review", "reviews", "ratingValue", "offers", "price", "priceRange", "faq", "FAQPage"}
+          expected_services = [slug for slug, _, _ in services["en-EG"]]
+          expected_people = [slug for slug, _, _, _ in people["en-EG"]]
+
+          for file_name, config in pages.items():
+              html = Path(file_name).read_text(encoding="utf-8")
+              matches = re.findall(r'<script type="application/ld\+json">\s*(.*?)\s*</script>', html, flags=re.S)
+              if len(matches) != 1:
+                  raise SystemExit(f"Expected one JSON-LD block after update in {file_name}")
+              data = json.loads(matches[0])
+              if data.get("@context") != "https://schema.org" or "@graph" not in data:
+                  raise SystemExit(f"Invalid JSON-LD graph wrapper in {file_name}")
+              text = json.dumps(data, ensure_ascii=False)
+              for key in forbidden_keys:
+                  if f'"{key}"' in text:
+                      raise SystemExit(f"Forbidden structured data key {key} in {file_name}")
+              graph = data["@graph"]
+              by_id = {node.get("@id"): node for node in graph if isinstance(node, dict) and node.get("@id")}
+              if CLINIC_ID not in by_id or WEBSITE_ID not in by_id or f"{config['url']}#webpage" not in by_id:
+                  raise SystemExit(f"Missing required stable IDs in {file_name}")
+              business = by_id[CLINIC_ID]
+              if business.get("@type") != ["Dentist", "Organization"]:
+                  raise SystemExit(f"Unexpected business @type in {file_name}: {business.get('@type')}")
+              webpage = by_id[f"{config['url']}#webpage"]
+              if webpage.get("url") != config["url"]:
+                  raise SystemExit(f"WebPage URL mismatch in {file_name}")
+              for entity in iter_entities(data):
+                  if entity.get("@type") != "ListItem" and not entity.get("@id") and entity.get("@type") not in {"PostalAddress", "OpeningHoursSpecification"}:
+                      raise SystemExit(f"Missing @id on entity in {file_name}: {entity.get('@type')}")
+                  if entity.get("@type") != "ListItem" and entity.get("@type") not in {"PostalAddress", "OpeningHoursSpecification"} and entity.get("inLanguage") != config["lang"]:
+                      raise SystemExit(f"Language mismatch in {file_name}: {entity.get('@type')} {entity.get('inLanguage')}")
+              if config["kind"] == "home":
+                  if webpage.get("mainEntity") != {"@id": CLINIC_ID}:
+                      raise SystemExit(f"Homepage mainEntity mismatch in {file_name}")
+              if config["kind"] == "services":
+                  list_id = f"{config['url']}#services-list"
+                  if webpage.get("mainEntity") != {"@id": list_id}:
+                      raise SystemExit(f"Services WebPage mainEntity mismatch in {file_name}")
+                  item_list = by_id[list_id]
+                  item_slugs = [item["item"]["@id"].removeprefix(f"{BASE}/#service-") for item in item_list["itemListElement"]]
+                  if item_slugs != expected_services:
+                      raise SystemExit(f"Services list mismatch in {file_name}: {item_slugs}")
+                  if any(item["item"].get("provider") != {"@id": CLINIC_ID} for item in item_list["itemListElement"]):
+                      raise SystemExit(f"Service provider mismatch in {file_name}")
+              if config["kind"] == "team":
+                  list_id = f"{config['url']}#team-list"
+                  if webpage.get("mainEntity") != {"@id": list_id}:
+                      raise SystemExit(f"Team WebPage mainEntity mismatch in {file_name}")
+                  item_list = by_id[list_id]
+                  item_slugs = [item["item"]["@id"].removeprefix(f"{BASE}/#person-") for item in item_list["itemListElement"]]
+                  if item_slugs != expected_people:
+                      raise SystemExit(f"Team list mismatch in {file_name}: {item_slugs}")
+              if config["kind"] in {"services", "team"}:
+                  breadcrumb_id = f"{config['url']}#breadcrumb"
+                  breadcrumb = by_id.get(breadcrumb_id)
+                  if not breadcrumb or webpage.get("breadcrumb") != {"@id": breadcrumb_id}:
+                      raise SystemExit(f"Breadcrumb connection mismatch in {file_name}")
+                  for index, item in enumerate(breadcrumb["itemListElement"], 1):
+                      if item.get("@type") != "ListItem" or item.get("position") != index or not item.get("name") or not item.get("item"):
+                          raise SystemExit(f"Invalid breadcrumb ListItem in {file_name}")
+              if strip_ld(originals[file_name]) != strip_ld(html):
+                  raise SystemExit(f"Non-JSON-LD HTML changed in {file_name}")
+
+          workflow = Path(".github/workflows/apply-structured-data.yml")
+          if workflow.exists():
+              workflow.unlink()
+
+          import subprocess
+          status = subprocess.check_output(["git", "status", "--short"], text=True)
+          allowed = set(pages) | {".github/workflows/apply-structured-data.yml"}
+          changed = {line[3:] for line in status.splitlines() if line}
+          if changed - allowed:
+              raise SystemExit(f"Unexpected changed files: {changed - allowed}")
+          print("structured data validation: OK")
+          print(status)
+          PY
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Optimize bilingual structured data"
+          git push origin HEAD:main
