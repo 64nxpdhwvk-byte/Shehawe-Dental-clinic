@@ -37,26 +37,80 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Dentist",
-    "name": "عيادة شهاوي لطب الأسنان",
-    "image": "https://shehawydentalclinic.com/assets/Logos1.png",
-    "url": "https://shehawydentalclinic.com/",
-    "telephone": "+20 3 542 2527",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "72 شارع الطيار أحمد سعود – برج الأمراء – الدور الأرضي – فلمنج (أمام الملحقية الثقافية الليبية)",
-      "addressLocality": "الإسكندرية",
-      "addressCountry": "EG"
-    },
-    "openingHoursSpecification": [{
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],
-      "opens": "16:00",
-      "closes": "22:00"
-    }],
-    "sameAs": [
-      "https://www.facebook.com/SHDC2016",
-      "https://www.instagram.com/shehawy_dent_clinic/"
+    "@graph": [
+      {
+        "@id": "https://shehawydentalclinic.com/#dentist",
+        "@type": [
+          "Dentist",
+          "Organization"
+        ],
+        "name": "عيادة شهاوي لطب الأسنان",
+        "url": "https://shehawydentalclinic.com/",
+        "logo": "https://shehawydentalclinic.com/assets/Logos1.png",
+        "image": "https://shehawydentalclinic.com/assets/Logos1.png",
+        "telephone": "+20 3 542 2527",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "72 شارع الطيار أحمد سعود – برج الأمراء – الدور الأرضي – فلمنج (أمام الملحقية الثقافية الليبية)",
+          "addressLocality": "الإسكندرية",
+          "addressCountry": "EG"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Saturday",
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday"
+            ],
+            "opens": "16:00",
+            "closes": "22:00"
+          }
+        ],
+        "paymentAccepted": [
+          "Visa",
+          "MasterCard",
+          "InstaPay"
+        ],
+        "sameAs": [
+          "https://www.facebook.com/SHDC2016",
+          "https://www.instagram.com/shehawy_dent_clinic/"
+        ],
+        "inLanguage": "ar-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/#website",
+        "@type": "WebSite",
+        "url": "https://shehawydentalclinic.com/",
+        "name": "عيادة شهاوي لطب الأسنان",
+        "publisher": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "inLanguage": "ar-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/#webpage",
+        "@type": "WebPage",
+        "url": "https://shehawydentalclinic.com/",
+        "name": "عيادة شهاوي لطب الأسنان | طبيب أسنان في فلمنج، الإسكندرية",
+        "description": "عيادة شهاوي لطب الأسنان في فلمنج، الإسكندرية، تقدم علاج العصب، التبييض، التركيبات، زراعة الأسنان ورعاية أسنان الأطفال مع تعقيم صارم وخطط علاج واضحة.",
+        "isPartOf": {
+          "@id": "https://shehawydentalclinic.com/#website"
+        },
+        "publisher": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "about": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "inLanguage": "ar-EG",
+        "mainEntity": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        }
+      }
     ]
   }
   </script>

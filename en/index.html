@@ -37,26 +37,80 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Dentist",
-    "name": "Shehawy Dental Clinic",
-    "image": "https://shehawydentalclinic.com/assets/Logos1.png",
-    "url": "https://shehawydentalclinic.com/en/",
-    "telephone": "+20 3 542 2527",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "72 El-Tayar Ahmed Saud St., Borg El-Omaraa, Ground Floor, Fleming (Opposite the Libyan Cultural Bureau)",
-      "addressLocality": "Alexandria",
-      "addressCountry": "EG"
-    },
-    "openingHoursSpecification": [{
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],
-      "opens": "16:00",
-      "closes": "22:00"
-    }],
-    "sameAs": [
-      "https://www.facebook.com/SHDC2016",
-      "https://www.instagram.com/shehawy_dent_clinic/"
+    "@graph": [
+      {
+        "@id": "https://shehawydentalclinic.com/#dentist",
+        "@type": [
+          "Dentist",
+          "Organization"
+        ],
+        "name": "Shehawy Dental Clinic",
+        "url": "https://shehawydentalclinic.com/",
+        "logo": "https://shehawydentalclinic.com/assets/Logos1.png",
+        "image": "https://shehawydentalclinic.com/assets/Logos1.png",
+        "telephone": "+20 3 542 2527",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "72 El-Tayar Ahmed Saud St., Borg El-Omaraa, Ground Floor, Fleming (Opposite the Libyan Cultural Bureau)",
+          "addressLocality": "Alexandria",
+          "addressCountry": "EG"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Saturday",
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday"
+            ],
+            "opens": "16:00",
+            "closes": "22:00"
+          }
+        ],
+        "paymentAccepted": [
+          "Visa",
+          "MasterCard",
+          "InstaPay"
+        ],
+        "sameAs": [
+          "https://www.facebook.com/SHDC2016",
+          "https://www.instagram.com/shehawy_dent_clinic/"
+        ],
+        "inLanguage": "en-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/#website",
+        "@type": "WebSite",
+        "url": "https://shehawydentalclinic.com/",
+        "name": "Shehawy Dental Clinic",
+        "publisher": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "inLanguage": "en-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/en/#webpage",
+        "@type": "WebPage",
+        "url": "https://shehawydentalclinic.com/en/",
+        "name": "Shehawy Dental Clinic in Fleming | Dentist in Alexandria",
+        "description": "Visit Shehawy Dental Clinic in Fleming, Alexandria for root canal treatment, dental implants, teeth whitening, cosmetic dentistry, and pediatric dental care with modern equipment and clear treatment plans.",
+        "isPartOf": {
+          "@id": "https://shehawydentalclinic.com/#website"
+        },
+        "publisher": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "about": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "inLanguage": "en-EG",
+        "mainEntity": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        }
+      }
     ]
   }
   </script>

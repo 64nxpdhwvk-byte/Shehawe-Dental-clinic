@@ -38,26 +38,265 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Dentist",
-    "name": "عيادة شهاوي لطب الأسنان",
-    "image": "https://shehawydentalclinic.com/assets/Logos1.png",
-    "url": "https://shehawydentalclinic.com/",
-    "telephone": "+20 3 542 2527",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "72 شارع الطيار أحمد سعود – برج الأمراء – الدور الأرضي – فلمنج (أمام الملحقية الثقافية الليبية)",
-      "addressLocality": "الإسكندرية",
-      "addressCountry": "EG"
-    },
-    "openingHoursSpecification": [{
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],
-      "opens": "16:00",
-      "closes": "22:00"
-    }],
-    "sameAs": [
-      "https://www.facebook.com/SHDC2016",
-      "https://www.instagram.com/shehawy_dent_clinic/"
+    "@graph": [
+      {
+        "@id": "https://shehawydentalclinic.com/#dentist",
+        "@type": [
+          "Dentist",
+          "Organization"
+        ],
+        "name": "عيادة شهاوي لطب الأسنان",
+        "url": "https://shehawydentalclinic.com/",
+        "logo": "https://shehawydentalclinic.com/assets/Logos1.png",
+        "image": "https://shehawydentalclinic.com/assets/Logos1.png",
+        "telephone": "+20 3 542 2527",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "72 شارع الطيار أحمد سعود – برج الأمراء – الدور الأرضي – فلمنج (أمام الملحقية الثقافية الليبية)",
+          "addressLocality": "الإسكندرية",
+          "addressCountry": "EG"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Saturday",
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday"
+            ],
+            "opens": "16:00",
+            "closes": "22:00"
+          }
+        ],
+        "paymentAccepted": [
+          "Visa",
+          "MasterCard",
+          "InstaPay"
+        ],
+        "sameAs": [
+          "https://www.facebook.com/SHDC2016",
+          "https://www.instagram.com/shehawy_dent_clinic/"
+        ],
+        "inLanguage": "ar-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/#website",
+        "@type": "WebSite",
+        "url": "https://shehawydentalclinic.com/",
+        "name": "عيادة شهاوي لطب الأسنان",
+        "publisher": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "inLanguage": "ar-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/services/#webpage",
+        "@type": "WebPage",
+        "url": "https://shehawydentalclinic.com/services/",
+        "name": "خدمات الأسنان في عيادة شهاوي | فلمنج الإسكندرية",
+        "description": "تعرف على خدمات عيادة شهاوي: علاج العصب، الحشوات التجميلية، علاج اللثة، التنظيف، التبييض، التركيبات، الزراعة وأسنان الأطفال.",
+        "isPartOf": {
+          "@id": "https://shehawydentalclinic.com/#website"
+        },
+        "publisher": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "about": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "inLanguage": "ar-EG",
+        "mainEntity": {
+          "@id": "https://shehawydentalclinic.com/services/#services-list"
+        },
+        "breadcrumb": {
+          "@id": "https://shehawydentalclinic.com/services/#breadcrumb"
+        }
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/services/#services-list",
+        "@type": "ItemList",
+        "name": "خدمات عيادة شهاوي لطب الأسنان",
+        "numberOfItems": 11,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-root-canal-treatment",
+              "@type": "Service",
+              "name": "علاج العصب (حشو العصب)",
+              "description": "نحافظ على السن وننهي الألم بأدق خطوات علاج العصب وبأعلى معايير الأمان.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-cosmetic-fillings",
+              "@type": "Service",
+              "name": "حشوات تجميلية",
+              "description": "حشوات بلون الأسنان تعيد الشكل والوظيفة بشكل طبيعي ومريح.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-gum-treatment",
+              "@type": "Service",
+              "name": "علاج اللثة",
+              "description": "تشخيص وعلاج نزيف والتهابات اللثة لحماية الأسنان ودعم صحة الفم على المدى الطويل.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-scaling-polishing",
+              "@type": "Service",
+              "name": "تنظيف الجير وتلميع الأسنان",
+              "description": "تنظيف عميق لإزالة الجير والتصبغات لابتسامة أنظف ونَفَس أفضل.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-teeth-whitening",
+              "@type": "Service",
+              "name": "تبييض الأسنان (Bleaching)",
+              "description": "تبييض آمن داخل العيادة لدرجات أفتح وابتسامة أكثر إشراقًا.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 6,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-zirconia-crowns",
+              "@type": "Service",
+              "name": "تيجان زيركون (Zirconia Crowns)",
+              "description": "تركيبات زيركون قوية وشكلها طبيعي لنتيجة ثابتة ومظهر جمالي ممتاز.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 7,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-porcelain-crowns",
+              "@type": "Service",
+              "name": "تيجان بورسلين (Porcelain Crowns)",
+              "description": "تركيبات بورسلين بجودة عالية لاستعادة السن بشكل طبيعي ونتائج دقيقة.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 8,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-removable-dentures",
+              "@type": "Service",
+              "name": "تركيبات متحركة (أطقم)",
+              "description": "أطقم مريحة ومظبوطة على المقاس تساعدك على الأكل والكلام بثقة.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 9,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-dental-implants",
+              "@type": "Service",
+              "name": "زراعة الأسنان",
+              "description": "حل ثابت لتعويض الأسنان المفقودة بزراعات مناسبة لحالتك ونتيجة قريبة من الطبيعي.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 10,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-dental-extractions",
+              "@type": "Service",
+              "name": "خلع عادي وخلع جراحي",
+              "description": "خلع آمن عند الحاجة مع متابعة بعد الإجراء لتقليل الألم وتسريع الالتئام.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 11,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-pediatric-dentistry",
+              "@type": "Service",
+              "name": "أسنان الأطفال",
+              "description": "رعاية لطيفة للأطفال تركّز على الوقاية والراحة وبناء عادات صحية من بدري.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "ar-EG"
+            }
+          }
+        ],
+        "inLanguage": "ar-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/services/#breadcrumb",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "الرئيسية",
+            "item": "https://shehawydentalclinic.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "الخدمات",
+            "item": "https://shehawydentalclinic.com/services/"
+          }
+        ],
+        "inLanguage": "ar-EG"
+      }
     ]
   }
   </script>

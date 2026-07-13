@@ -37,26 +37,147 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Dentist",
-    "name": "Shehawy Dental Clinic",
-    "image": "https://shehawydentalclinic.com/assets/Logos1.png",
-    "url": "https://shehawydentalclinic.com/en/",
-    "telephone": "+20 3 542 2527",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "72 El-Tayar Ahmed Saud St., Borg El-Omaraa, Ground Floor, Fleming (Opposite the Libyan Cultural Bureau)",
-      "addressLocality": "Alexandria",
-      "addressCountry": "EG"
-    },
-    "openingHoursSpecification": [{
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],
-      "opens": "16:00",
-      "closes": "22:00"
-    }],
-    "sameAs": [
-      "https://www.facebook.com/SHDC2016",
-      "https://www.instagram.com/shehawy_dent_clinic/"
+    "@graph": [
+      {
+        "@id": "https://shehawydentalclinic.com/#dentist",
+        "@type": [
+          "Dentist",
+          "Organization"
+        ],
+        "name": "Shehawy Dental Clinic",
+        "url": "https://shehawydentalclinic.com/",
+        "logo": "https://shehawydentalclinic.com/assets/Logos1.png",
+        "image": "https://shehawydentalclinic.com/assets/Logos1.png",
+        "telephone": "+20 3 542 2527",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "72 El-Tayar Ahmed Saud St., Borg El-Omaraa, Ground Floor, Fleming (Opposite the Libyan Cultural Bureau)",
+          "addressLocality": "Alexandria",
+          "addressCountry": "EG"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Saturday",
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday"
+            ],
+            "opens": "16:00",
+            "closes": "22:00"
+          }
+        ],
+        "paymentAccepted": [
+          "Visa",
+          "MasterCard",
+          "InstaPay"
+        ],
+        "sameAs": [
+          "https://www.facebook.com/SHDC2016",
+          "https://www.instagram.com/shehawy_dent_clinic/"
+        ],
+        "inLanguage": "en-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/#website",
+        "@type": "WebSite",
+        "url": "https://shehawydentalclinic.com/",
+        "name": "Shehawy Dental Clinic",
+        "publisher": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "inLanguage": "en-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/en/team/#webpage",
+        "@type": "WebPage",
+        "url": "https://shehawydentalclinic.com/en/team/",
+        "name": "Dental Team in Fleming | Shehawy Dental Clinic",
+        "description": "Meet the Shehawy Dental Clinic team in Fleming, Alexandria: Dr. Ahmed Khairy and specialists in endodontics, orthodontics, pediatric dentistry, and prosthodontics.",
+        "isPartOf": {
+          "@id": "https://shehawydentalclinic.com/#website"
+        },
+        "publisher": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "about": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "inLanguage": "en-EG",
+        "mainEntity": {
+          "@id": "https://shehawydentalclinic.com/en/team/#team-list"
+        },
+        "breadcrumb": {
+          "@id": "https://shehawydentalclinic.com/en/team/#breadcrumb"
+        }
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/en/team/#team-list",
+        "@type": "ItemList",
+        "name": "Shehawy Dental Clinic Team",
+        "numberOfItems": 3,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#person-ahmed-khairy",
+              "@type": "Person",
+              "name": "Dr. Ahmed Khairy",
+              "image": "https://shehawydentalclinic.com/assets/team/AKhairy.png",
+              "description": "Founder of Shehawy Dental Clinic and a 6th of October University graduate (Class of 2008). He delivers precise treatment with clear steps and easy-to-understand explanations, prioritising patient comfort and long-term results. Dr. Ahmed continually develops his skills through specialized endodontic courses and believes that accurate diagnosis and thoughtful planning are the foundation of any successful treatment.",
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#person-hesham-el-nouby",
+              "@type": "Person",
+              "name": "Dr. Hesham El-Nouby",
+              "image": "https://shehawydentalclinic.com/assets/team/cicco.jpeg",
+              "description": "Dr. Hesham El-Nouby is an orthodontic dentist and laser aesthetics practitioner. He follows an approach that combines precise diagnosis, modern technology, and balanced results—enhancing the patient’s smile while respecting their natural features and boosting confidence.",
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#person-hend-gamal-el-din",
+              "@type": "Person",
+              "name": "Dr. Hend Gamal El-Din",
+              "image": "https://shehawydentalclinic.com/assets/team/koki.png",
+              "description": "General dentist and Alexandria University graduate (Class of 2012). She creates a calm, friendly experience for children, helping them overcome fear and enjoy visiting the dentist. Dr. Hend has advanced her specialty through pediatric dentistry courses and heads the dental department at Abis 10th unit with the Ministry of Health.",
+              "inLanguage": "en-EG"
+            }
+          }
+        ],
+        "inLanguage": "en-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/en/team/#breadcrumb",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://shehawydentalclinic.com/en/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Team",
+            "item": "https://shehawydentalclinic.com/en/team/"
+          }
+        ],
+        "inLanguage": "en-EG"
+      }
     ]
   }
   </script>

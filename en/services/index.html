@@ -37,26 +37,265 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Dentist",
-    "name": "Shehawy Dental Clinic",
-    "image": "https://shehawydentalclinic.com/assets/Logos1.png",
-    "url": "https://shehawydentalclinic.com/en/",
-    "telephone": "+20 3 542 2527",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "72 El-Tayar Ahmed Saud St., Borg El-Omaraa, Ground Floor, Fleming (Opposite the Libyan Cultural Bureau)",
-      "addressLocality": "Alexandria",
-      "addressCountry": "EG"
-    },
-    "openingHoursSpecification": [{
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],
-      "opens": "16:00",
-      "closes": "22:00"
-    }],
-    "sameAs": [
-      "https://www.facebook.com/SHDC2016",
-      "https://www.instagram.com/shehawy_dent_clinic/"
+    "@graph": [
+      {
+        "@id": "https://shehawydentalclinic.com/#dentist",
+        "@type": [
+          "Dentist",
+          "Organization"
+        ],
+        "name": "Shehawy Dental Clinic",
+        "url": "https://shehawydentalclinic.com/",
+        "logo": "https://shehawydentalclinic.com/assets/Logos1.png",
+        "image": "https://shehawydentalclinic.com/assets/Logos1.png",
+        "telephone": "+20 3 542 2527",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "72 El-Tayar Ahmed Saud St., Borg El-Omaraa, Ground Floor, Fleming (Opposite the Libyan Cultural Bureau)",
+          "addressLocality": "Alexandria",
+          "addressCountry": "EG"
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": [
+              "Saturday",
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday"
+            ],
+            "opens": "16:00",
+            "closes": "22:00"
+          }
+        ],
+        "paymentAccepted": [
+          "Visa",
+          "MasterCard",
+          "InstaPay"
+        ],
+        "sameAs": [
+          "https://www.facebook.com/SHDC2016",
+          "https://www.instagram.com/shehawy_dent_clinic/"
+        ],
+        "inLanguage": "en-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/#website",
+        "@type": "WebSite",
+        "url": "https://shehawydentalclinic.com/",
+        "name": "Shehawy Dental Clinic",
+        "publisher": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "inLanguage": "en-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/en/services/#webpage",
+        "@type": "WebPage",
+        "url": "https://shehawydentalclinic.com/en/services/",
+        "name": "Dental Services in Alexandria | Shehawy Dental Clinic",
+        "description": "Explore dental services at Shehawy Dental Clinic: root canals, cosmetic fillings, gum care, scaling, whitening, crowns, implants, extractions, and pediatric dentistry.",
+        "isPartOf": {
+          "@id": "https://shehawydentalclinic.com/#website"
+        },
+        "publisher": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "about": {
+          "@id": "https://shehawydentalclinic.com/#dentist"
+        },
+        "inLanguage": "en-EG",
+        "mainEntity": {
+          "@id": "https://shehawydentalclinic.com/en/services/#services-list"
+        },
+        "breadcrumb": {
+          "@id": "https://shehawydentalclinic.com/en/services/#breadcrumb"
+        }
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/en/services/#services-list",
+        "@type": "ItemList",
+        "name": "Shehawy Dental Clinic Services",
+        "numberOfItems": 11,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-root-canal-treatment",
+              "@type": "Service",
+              "name": "Root Canal Treatment",
+              "description": "Save an infected tooth and relieve pain with precise, modern endodontic care.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-cosmetic-fillings",
+              "@type": "Service",
+              "name": "Cosmetic Fillings",
+              "description": "Natural-looking fillings that restore function and blend seamlessly with your smile.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-gum-treatment",
+              "@type": "Service",
+              "name": "Gum Treatment",
+              "description": "Professional periodontal care to treat bleeding gums and protect long-term oral health.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-scaling-polishing",
+              "@type": "Service",
+              "name": "Teeth Scaling & Polishing",
+              "description": "Deep cleaning to remove tartar and stains for a healthier, fresher smile.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-teeth-whitening",
+              "@type": "Service",
+              "name": "Teeth Whitening (Bleaching)",
+              "description": "Safe in-clinic whitening to brighten your teeth and boost your confidence.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 6,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-zirconia-crowns",
+              "@type": "Service",
+              "name": "Zirconia Crowns",
+              "description": "Strong, aesthetic zirconia crowns designed for a natural look and long-lasting results.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 7,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-porcelain-crowns",
+              "@type": "Service",
+              "name": "Porcelain Crowns",
+              "description": "High-quality porcelain restorations to restore damaged teeth with a clean, natural finish.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 8,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-removable-dentures",
+              "@type": "Service",
+              "name": "Removable Dentures",
+              "description": "Comfortable, functional dentures customized to fit and support daily life.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 9,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-dental-implants",
+              "@type": "Service",
+              "name": "Dental Implants",
+              "description": "Replace missing teeth with stable, natural-feeling implants tailored to your case.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 10,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-dental-extractions",
+              "@type": "Service",
+              "name": "Extractions (Simple & Surgical)",
+              "description": "Safe tooth removal when needed, including surgical extractions with proper follow-up.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 11,
+            "item": {
+              "@id": "https://shehawydentalclinic.com/#service-pediatric-dentistry",
+              "@type": "Service",
+              "name": "Pediatric Dentistry",
+              "description": "Gentle dental care for children, focused on comfort, prevention, and healthy habits.",
+              "provider": {
+                "@id": "https://shehawydentalclinic.com/#dentist"
+              },
+              "inLanguage": "en-EG"
+            }
+          }
+        ],
+        "inLanguage": "en-EG"
+      },
+      {
+        "@id": "https://shehawydentalclinic.com/en/services/#breadcrumb",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://shehawydentalclinic.com/en/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Services",
+            "item": "https://shehawydentalclinic.com/en/services/"
+          }
+        ],
+        "inLanguage": "en-EG"
+      }
     ]
   }
   </script>
