@@ -1,0 +1,85 @@
+name: Remove unsupported payment schema
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/remove-payment-schema.yml
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup-payment-schema:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Remove paymentAccepted and validate JSON-LD
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+          import subprocess
+          from pathlib import Path
+
+          pages = [
+              "index.html",
+              "en/index.html",
+              "services/index.html",
+              "en/services/index.html",
+              "team/index.html",
+              "en/team/index.html",
+          ]
+          script_re = re.compile(r'  <script type="application/ld\+json">\s*(.*?)\s*</script>', re.S)
+          block_re = re.compile(r'        "paymentAccepted": \[\n          "Visa",\n          "MasterCard",\n          "InstaPay"\n        \],\n')
+
+          def strip_ld(html):
+              return script_re.sub('  <script type="application/ld+json"></script>', html)
+
+          for file_name in pages:
+              path = Path(file_name)
+              original = path.read_text(encoding="utf-8")
+              updated, count = block_re.subn('', original, count=1)
+              if count != 1:
+                  raise SystemExit(f"Expected one paymentAccepted block in {file_name}, removed {count}")
+              if strip_ld(original) != strip_ld(updated):
+                  raise SystemExit(f"Non-JSON-LD HTML changed in {file_name}")
+              matches = script_re.findall(updated)
+              if len(matches) != 1:
+                  raise SystemExit(f"Expected one JSON-LD block in {file_name}")
+              data = json.loads(matches[0])
+              text = json.dumps(data, ensure_ascii=False)
+              if '"paymentAccepted"' in text:
+                  raise SystemExit(f"paymentAccepted still present in {file_name}")
+              if data.get("@context") != "https://schema.org" or not isinstance(data.get("@graph"), list):
+                  raise SystemExit(f"Invalid JSON-LD graph in {file_name}")
+              path.write_text(updated, encoding="utf-8")
+
+          workflow = Path(".github/workflows/remove-payment-schema.yml")
+          if workflow.exists():
+              workflow.unlink()
+
+          status = subprocess.check_output(["git", "status", "--short"], text=True)
+          allowed = set(pages) | {".github/workflows/remove-payment-schema.yml"}
+          changed = {line[3:] for line in status.splitlines() if line}
+          if changed - allowed:
+              raise SystemExit(f"Unexpected changed files: {changed - allowed}")
+          print("payment schema cleanup validation: OK")
+          print(status)
+          PY
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Remove unsupported payment structured data"
+          git push origin HEAD:main
