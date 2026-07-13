@@ -27,43 +27,27 @@ jobs:
           source = "https://raw.githubusercontent.com/64nxpdhwvk-byte/Shehawe-Dental-clinic/6ea7ca38c40078fd47d07be005c3adee50cf62b4/.github/workflows/apply-structured-data.yml"
           raw = urllib.request.urlopen(source, timeout=30).read().decode("utf-8")
           script = raw.split("python3 - <<'PY'\n", 1)[1].split("\n          PY", 1)[0]
-          script = textwrap.dedent(script)
-
-          script = script.replace("""def iter_entities(value):
-    if isinstance(value, dict):
-        if value.get("@type") in {"WebPage", "WebSite", "ItemList", "BreadcrumbList", "Service", "Person"} or value.get("@type") == ["Dentist", "Organization"]:
-            yield value
-        for child in value.values():
-            yield from iter_entities(child)
-    elif isinstance(value, list):
-        for child in value:
-            yield from iter_entities(child)
-""", """def iter_entities(value):
-    if isinstance(value, dict):
-        node_type = value.get("@type")
-        if node_type == ["Dentist", "Organization"] or (isinstance(node_type, str) and node_type in {"WebPage", "WebSite", "ItemList", "BreadcrumbList", "Service", "Person"}):
-            yield value
-        for child in value.values():
-            yield from iter_entities(child)
-    elif isinstance(value, list):
-        for child in value:
-            yield from iter_entities(child)
-""")
-
-          script = script.replace("""    for entity in iter_entities(data):
-        if entity.get("@type") != "ListItem" and not entity.get("@id") and entity.get("@type") not in {"PostalAddress", "OpeningHoursSpecification"}:
-            raise SystemExit(f"Missing @id on entity in {file_name}: {entity.get('@type')}")
-        if entity.get("@type") != "ListItem" and entity.get("@type") not in {"PostalAddress", "OpeningHoursSpecification"} and entity.get("inLanguage") != config["lang"]:
-            raise SystemExit(f"Language mismatch in {file_name}: {entity.get('@type')} {entity.get('inLanguage')}")
-""", """    for entity in iter_entities(data):
-        entity_type = entity.get("@type")
-        ignored_type = entity_type in {"PostalAddress", "OpeningHoursSpecification"} if isinstance(entity_type, str) else False
-        if entity_type != "ListItem" and not entity.get("@id") and not ignored_type:
-            raise SystemExit(f"Missing @id on entity in {file_name}: {entity_type}")
-        if entity_type != "ListItem" and not ignored_type and entity.get("inLanguage") != config["lang"]:
-            raise SystemExit(f"Language mismatch in {file_name}: {entity_type} {entity.get('inLanguage')}")
-""")
-
+          lines = textwrap.dedent(script).splitlines()
+          patched = []
+          for line in lines:
+              stripped = line.strip()
+              indent = line[:len(line) - len(line.lstrip())]
+              if stripped.startswith('if value.get("@type") in {"WebPage"'):
+                  patched.append(indent + 'node_type = value.get("@type")')
+                  patched.append(indent + 'if node_type == ["Dentist", "Organization"] or (isinstance(node_type, str) and node_type in {"WebPage", "WebSite", "ItemList", "BreadcrumbList", "Service", "Person"}):')
+              elif stripped.startswith('if entity.get("@type") != "ListItem" and not entity.get("@id")'):
+                  patched.append(indent + 'entity_type = entity.get("@type")')
+                  patched.append(indent + 'ignored_type = entity_type in {"PostalAddress", "OpeningHoursSpecification"} if isinstance(entity_type, str) else False')
+                  patched.append(indent + 'if entity_type != "ListItem" and not entity.get("@id") and not ignored_type:')
+              elif 'Missing @id on entity' in stripped:
+                  patched.append(indent + 'raise SystemExit(f"Missing @id on entity in {file_name}: {entity_type}")')
+              elif stripped.startswith('if entity.get("@type") != "ListItem" and entity.get("@type") not in'):
+                  patched.append(indent + 'if entity_type != "ListItem" and not ignored_type and entity.get("inLanguage") != config["lang"]:')
+              elif 'Language mismatch in {file_name}' in stripped:
+                  patched.append(indent + 'raise SystemExit(f"Language mismatch in {file_name}: {entity_type} {entity.get(\'inLanguage\')}")')
+              else:
+                  patched.append(line)
+          script = "\n".join(patched) + "\n"
           exec(compile(script, "structured-data-update.py", "exec"))
           PY
 
